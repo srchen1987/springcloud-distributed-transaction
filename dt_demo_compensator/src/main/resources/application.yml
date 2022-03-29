@@ -1,0 +1,42 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+server:
+  port: 8768
+spring:
+  profiles:
+   active: uat
+  application:
+    name: compensator
+  datasource:
+    product:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      password: 
+      jdbcUrl: jdbc:mysql://127.0.0.1:3306/product?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false
+      username: root
+    user:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      password: 
+      jdbcUrl: jdbc:mysql://127.0.0.1:3306/user?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false
+      username: root
+#  activemq:
+#    enabled: false
+#    broker-url: tcp://127.0.0.1:61616
+#    password: jackson123
+#    username: jackson
+  rabbitmq:
+     host: 192.168.1.222
+     port: 5677
+     username: uat
+     password: uat
+     virtual-host: /uat
+     exchange: transaction
+     publisher-confirms: true
+     publisher-returns: true
+     listener:
+       simple:
+         acknowledge-mode: manual
+dawdler:
+  transaction:
+    mqserver: rabbitmq
