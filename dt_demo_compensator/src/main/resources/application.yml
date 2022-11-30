@@ -12,12 +12,12 @@ spring:
   datasource:
     product:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      password: 
+      password: 12345678
       jdbcUrl: jdbc:mysql://127.0.0.1:3306/product?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false
       username: root
     user:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      password: 
+      password: 12345678
       jdbcUrl: jdbc:mysql://127.0.0.1:3306/user?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false
       username: root
 #  activemq:
@@ -26,11 +26,11 @@ spring:
 #    password: jackson123
 #    username: jackson
   rabbitmq:
-     host: 192.168.1.222
-     port: 5677
-     username: uat
-     password: uat
-     virtual-host: /uat
+     host: 192.168.43.137
+     port: 5672
+     username: mq_user
+     password: mq_user
+     virtual-host: /
      exchange: transaction
      publisher-confirms: true
      publisher-returns: true

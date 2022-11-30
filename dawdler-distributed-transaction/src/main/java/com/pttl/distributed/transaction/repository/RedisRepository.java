@@ -13,7 +13,7 @@ import com.pttl.distributed.transaction.context.ApplicationContextHolder;
 import com.pttl.distributed.transaction.context.DistributedTransactionContext;
 
 import redis.clients.jedis.Jedis;
-import redis.clients.util.Pool;
+import redis.clients.jedis.util.Pool;
 /**
  * 
  * @ClassName:  RedisRepository   
