@@ -1,6 +1,7 @@
 # spring_clould分布式事务框架-v0.1
 ## 项目介绍
 基于spring cloud 研发的分布式事务架构，用来解决多数据库下数据不一致的问题。
+注意:springboot 1.x已不再支持,公司内部的框架还保留在gitlab中,即将升级成springboot.2.7.10,无论怎么升级springboot与springcloud都避免不了CVE漏洞王的称号.
 ## 项目结构
  ### 架构源码
  dawdler-distributed-trasaction 分布式事务核心架构源码  
