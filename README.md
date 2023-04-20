@@ -6,6 +6,7 @@
  ### 架构源码
  dawdler-distributed-trasaction 分布式事务核心架构源码  
  dawdler-distributed-compensator 补偿处理架构源码  
+ dawdler-distributed-transaction-api 分布式事务api
 
 ### 使用实例
 
