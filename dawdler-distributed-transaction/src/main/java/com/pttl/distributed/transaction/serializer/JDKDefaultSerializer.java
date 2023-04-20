@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.pttl.distributed.transaction.serializer;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -22,13 +23,14 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.ObjectStreamClass;
+
 /**
  * 
- * @Title:  JDKDefaultSerializer.java
- * @Description:    jdk序列化实现   
- * @author: jackson.song    
- * @date:   2014年12月22日      
- * @version V1.0 
+ * @Title: JDKDefaultSerializer.java
+ * @Description: jdk序列化实现
+ * @author: jackson.song
+ * @date: 2014年12月22日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class JDKDefaultSerializer implements Serializer {
@@ -57,9 +59,10 @@ public class JDKDefaultSerializer implements Serializer {
 	public Object deserialize(byte[] bytes) throws Exception {
 		ObjectInputStream ois = null;
 		try {
-			ois = new DawdlerObjectInputStream(new ByteArrayInputStream(bytes),Thread.currentThread().getContextClassLoader());
+			ois = new DawdlerObjectInputStream(new ByteArrayInputStream(bytes),
+					Thread.currentThread().getContextClassLoader());
 //			ois = new ObjectInputStream(new ByteArrayInputStream(bytes));
-			Object obj=ois.readObject();
+			Object obj = ois.readObject();
 			return obj;
 		} finally {
 			if (ois != null) {
@@ -67,11 +70,14 @@ public class JDKDefaultSerializer implements Serializer {
 			}
 		}
 	}
+
 	private class DawdlerObjectInputStream extends ObjectInputStream {
 		private ClassLoader classLoader;
-		protected DawdlerObjectInputStream(InputStream input,ClassLoader classLoader) throws IOException, SecurityException {
+
+		protected DawdlerObjectInputStream(InputStream input, ClassLoader classLoader)
+				throws IOException, SecurityException {
 			super(input);
-			this.classLoader=classLoader;
+			this.classLoader = classLoader;
 		}
 
 		@Override
@@ -85,5 +91,5 @@ public class JDKDefaultSerializer implements Serializer {
 		}
 
 	}
-	
+
 }

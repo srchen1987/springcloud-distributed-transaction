@@ -42,7 +42,7 @@ import redis.clients.jedis.util.Pool;
  * @email suxuan696@gmail.com
  */
 public final class JedisPoolFactory {
-	
+
 	public static Map<String, Pool<Jedis>> pools = new ConcurrentHashMap<>();
 
 	private static Pool<Jedis> createJedisPool(String fileName) throws Exception {
