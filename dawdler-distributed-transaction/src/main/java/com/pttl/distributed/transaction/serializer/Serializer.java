@@ -15,16 +15,18 @@
  * limitations under the License.
  */
 package com.pttl.distributed.transaction.serializer;
+
 /**
  * 
- * @Title:  Serializer.java
- * @Description:    序列化接口   
- * @author: jackson.song    
- * @date:   2014年12月22日    
- * @version V1.0 
+ * @Title: Serializer.java
+ * @Description: 序列化接口
+ * @author: jackson.song
+ * @date: 2014年12月22日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public interface Serializer {
 	public Object deserialize(byte[] bytes) throws Exception;
+
 	public byte[] serialize(Object object) throws Exception;
 }

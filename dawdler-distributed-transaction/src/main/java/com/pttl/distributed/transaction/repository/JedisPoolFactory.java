@@ -24,8 +24,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import org.springframework.core.io.support.PropertiesLoaderUtils;
-
 import com.pttl.distributed.transaction.util.PropertiesUtil;
 
 import redis.clients.jedis.Jedis;
@@ -33,7 +31,7 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisSentinelPool;
 import redis.clients.jedis.Protocol;
-import redis.clients.util.Pool;
+import redis.clients.jedis.util.Pool;
 
 /**
  * @author jackson.song
@@ -44,7 +42,7 @@ import redis.clients.util.Pool;
  * @email suxuan696@gmail.com
  */
 public final class JedisPoolFactory {
-	
+
 	public static Map<String, Pool<Jedis>> pools = new ConcurrentHashMap<>();
 
 	private static Pool<Jedis> createJedisPool(String fileName) throws Exception {

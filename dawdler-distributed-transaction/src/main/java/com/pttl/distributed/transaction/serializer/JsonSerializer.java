@@ -15,17 +15,19 @@
  * limitations under the License.
  */
 package com.pttl.distributed.transaction.serializer;
+
 import org.springframework.stereotype.Component;
 
 import com.pttl.distributed.transaction.context.DistributedTransactionContext;
 import com.pttl.distributed.transaction.util.JsonUtils;
+
 /**
  * 
- * @Title:  JsonSerializer.java
- * @Description:    json实现的序列化  
- * @author: jackson.song    
- * @date:   2021年10月26日     
- * @version V1.0 
+ * @Title: JsonSerializer.java
+ * @Description: json实现的序列化
+ * @author: jackson.song
+ * @date: 2021年10月26日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 @Component

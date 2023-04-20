@@ -1,5 +1,7 @@
 package com.pttl.distributed.transaction.message.jms.activemq;
+
 import javax.jms.ConnectionFactory;
+
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,20 +14,22 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
 import com.pttl.distributed.transaction.message.MessageConfig;
+
 /**
  * 
- * @ClassName:  JmsConfig   
- * @Description:   jms配置
+ * @ClassName: JmsConfig
+ * @Description: jms配置
  * @author: srchen
- * @date:   2019年11月02日 上午0:02:41
+ * @date: 2019年11月02日 上午0:02:41
  */
 @Component
-@ConfigurationProperties(prefix="spring.activemq")
+@ConfigurationProperties(prefix = "spring.activemq")
 @ConditionalOnExpression("'${dawdler.transaction.mqserver}'.equals('activemq')")
 public class JmsConfig extends MessageConfig {
 	public JmsConfig() {
 		// TODO Auto-generated constructor stub
 	}
+
 //	public JmsTemplate jmsTemplate(ActiveMQConnectionFactory factory) {
 //		JmsTemplate jmsTemplate = new JmsTemplate();
 //		// 关闭事物
@@ -36,16 +40,13 @@ public class JmsConfig extends MessageConfig {
 //	}
 	@Value("${spring.activemq.broker-url:}")
 	private String brokerUrl;
-	
+
 	@Value("${spring.activemq.username:}")
 	private String username;
-	
+
 	@Value("${spring.activemq.password:}")
 	private String password;
-	
-	 
-	 
-	
+
 	@Autowired
 	private ConnectionFactory activeMQConnectionFactory;
 
@@ -59,16 +60,16 @@ public class JmsConfig extends MessageConfig {
 		return factory;
 	}
 
-	
 	@Bean("transactionJmsListenerContainerFactory")
-  public JmsListenerContainerFactory<?> jmsListenerContainerFactory() {
-        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
-        factory.setConnectionFactory(activeMQConnectionFactory);
+	public JmsListenerContainerFactory<?> jmsListenerContainerFactory() {
+		DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+		factory.setConnectionFactory(activeMQConnectionFactory);
 //        factory.setPubSubDomain(true);
 //        factory.setConcurrency("3-10");
-        factory.setRecoveryInterval(1000L);
-        return factory;
-    }
+		factory.setRecoveryInterval(1000L);
+		return factory;
+	}
+
 	@Bean
 	public JmsTemplate jmsTemplate() {
 		JmsTemplate jmsTemplate = new JmsTemplate(activeMQConnectionFactory);

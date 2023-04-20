@@ -1,6 +1,5 @@
 package com.pttl.distributed.transaction.util;
 
-
 import java.io.IOException;
 import java.util.Properties;
 
@@ -39,14 +38,14 @@ public class PropertiesUtil {
 		}
 		return defaultValue;
 	}
-	
+
 //	public static Properties loadActiveProfileProperties(String fileName) throws IOException {
 //		String activeProfile = System.getProperty("spring.profiles.active");
 //		return loadAllProperties(fileName +(activeProfile != null ? "-"+activeProfile : "")+".properties");
 //	}
-	
+
 	public static Properties loadAllProperties(String fileName) throws IOException {
 		return PropertiesLoaderUtils.loadAllProperties(fileName);
 	}
-	
+
 }

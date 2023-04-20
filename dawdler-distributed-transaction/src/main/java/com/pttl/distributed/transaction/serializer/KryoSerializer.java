@@ -15,21 +15,22 @@
  * limitations under the License.
  */
 package com.pttl.distributed.transaction.serializer;
+
 import org.objenesis.strategy.StdInstantiatorStrategy;
-import org.springframework.stereotype.Component;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.io.UnsafeInput;
 import com.esotericsoftware.kryo.io.UnsafeOutput;
+
 /**
  * 
- * @Title:  KryoSerializer.java
- * @Description:    kroy实现的序列化 目前升级到最新版本 4x   
- * @author: jackson.song    
- * @date:   2014年12月22日     
- * @version V1.0 
+ * @Title: KryoSerializer.java
+ * @Description: kroy实现的序列化 目前升级到最新版本 4x
+ * @author: jackson.song
+ * @date: 2014年12月22日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 //@Component
@@ -40,8 +41,10 @@ public class KryoSerializer implements Serializer {
 			return kryoLocal;
 		};
 	};
-	public static class KryoLocal{
+
+	public static class KryoLocal {
 		private Kryo kryo;
+
 //		private Input input;
 //		private Output out;
 		public KryoLocal() {
@@ -53,10 +56,12 @@ public class KryoSerializer implements Serializer {
 //			input = new UnsafeInput();
 //			out = new UnsafeOutput(2048,-1);
 		}
+
 		public Kryo getKryo() {
 			kryo.setClassLoader(Thread.currentThread().getContextClassLoader());
 			return kryo;
 		}
+
 		public void setKryo(Kryo kryo) {
 			this.kryo = kryo;
 		}
@@ -73,6 +78,7 @@ public class KryoSerializer implements Serializer {
 //			this.out = out;
 //		}
 	}
+
 	@Override
 	public Object deserialize(byte[] bytes) throws Exception {
 		Kryo kryo = kryos.get().getKryo();
@@ -80,9 +86,9 @@ public class KryoSerializer implements Serializer {
 		Input input = new UnsafeInput();
 		input.setBuffer(bytes);
 		Object obj;
-		try{
+		try {
 			obj = kryo.readClassAndObject(input);
-		}finally{
+		} finally {
 			input.close();
 		}
 		return obj;
@@ -92,12 +98,12 @@ public class KryoSerializer implements Serializer {
 	public byte[] serialize(Object object) throws Exception {
 		Kryo kryo = kryos.get().kryo;
 //		Output out = kryos.get().out;
-		Output out = new UnsafeOutput(2048,-1);
-		byte []datas = null;
+		Output out = new UnsafeOutput(2048, -1);
+		byte[] datas = null;
 		try {
 			kryo.writeClassAndObject(out, object);
 			datas = out.toBytes();
-		}finally {
+		} finally {
 			out.flush();
 			out.close();
 		}
