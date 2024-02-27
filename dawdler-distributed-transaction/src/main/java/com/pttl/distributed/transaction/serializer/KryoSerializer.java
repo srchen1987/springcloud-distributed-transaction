@@ -21,8 +21,9 @@ import org.objenesis.strategy.StdInstantiatorStrategy;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import com.esotericsoftware.kryo.io.UnsafeInput;
-import com.esotericsoftware.kryo.io.UnsafeOutput;
+import com.esotericsoftware.kryo.unsafe.UnsafeInput;
+import com.esotericsoftware.kryo.unsafe.UnsafeOutput;
+import com.esotericsoftware.kryo.util.DefaultInstantiatorStrategy;
 
 /**
  * 
@@ -50,7 +51,8 @@ public class KryoSerializer implements Serializer {
 		public KryoLocal() {
 			kryo = new Kryo();
 			kryo.setReferences(true);
-			kryo.setInstantiatorStrategy(new Kryo.DefaultInstantiatorStrategy(new StdInstantiatorStrategy()));
+			kryo.setRegistrationRequired(false);
+			kryo.setInstantiatorStrategy(new DefaultInstantiatorStrategy(new StdInstantiatorStrategy()));
 //			  ((Kryo.DefaultInstantiatorStrategy) kryo.getInstantiatorStrategy())
 //              .setFallbackInstantiatorStrategy(new StdInstantiatorStrategy());
 //			input = new UnsafeInput();
