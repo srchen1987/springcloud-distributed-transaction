@@ -1,6 +1,5 @@
 package com.pttl.distributed.transaction.message.jms.activemq;
 
-import javax.jms.ConnectionFactory;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,8 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
 import com.pttl.distributed.transaction.message.MessageConfig;
+
+import jakarta.jms.ConnectionFactory;
 
 /**
  * 

@@ -24,6 +24,8 @@ import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.unsafe.UnsafeInput;
 import com.esotericsoftware.kryo.unsafe.UnsafeOutput;
 import com.esotericsoftware.kryo.util.DefaultInstantiatorStrategy;
+import com.pttl.distributed.transaction.context.DistributedTransactionContext;
+import com.pttl.distributed.transaction.message.MessageConfig;
 
 /**
  * 
@@ -34,13 +36,12 @@ import com.esotericsoftware.kryo.util.DefaultInstantiatorStrategy;
  * @version V1.0
  * @email: suxuan696@gmail.com
  */
-//@Component
 public class KryoSerializer implements Serializer {
 	private static final ThreadLocal<KryoLocal> kryos = new ThreadLocal<KryoLocal>() {
 		protected KryoLocal initialValue() {
 			KryoLocal kryoLocal = new KryoLocal();
 			return kryoLocal;
-		};
+		}
 	};
 
 	public static class KryoLocal {
@@ -110,5 +111,17 @@ public class KryoSerializer implements Serializer {
 			out.close();
 		}
 		return datas;
+	}
+	
+	public static void main(String[] args) throws Exception {
+		KryoSerializer s = new KryoSerializer();
+		DistributedTransactionContext dc = new DistributedTransactionContext();
+		MessageConfig mc = new MessageConfig();
+		dc.setAttachment(mc);
+		byte[] data = s.serialize(dc);
+		
+		 dc = (DistributedTransactionContext) s.deserialize(data);
+		 
+		 System.out.println(dc.getAttachment());
 	}
 }

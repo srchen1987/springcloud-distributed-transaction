@@ -30,7 +30,6 @@ import com.pttl.distributed.transaction.util.JsonUtils;
 public class MessageConsumer implements ApplicationContextAware {
 	private static Logger log = LoggerFactory.getLogger(MessageConsumer.class);
 	ExecutorService executor;
-
 	@Autowired
 	TransactionRepository transactionRepository;
 
@@ -65,23 +64,19 @@ public class MessageConsumer implements ApplicationContextAware {
 			List<DistributedTransactionContext> list = transactionRepository.findAllByGlobalTxId(globalTxId);
 			for (DistributedTransactionContext dt : list) {
 				executor.execute(() -> {
-//				Map<String,Object> datas = dt.getDatas();
 					String action = dt.getAction();
 					Object obj = applicationContext.getBean(action);
 					String branchTxId = dt.getBranchTxId();
 					DistributedTransactionCustomProcessor dp = (DistributedTransactionCustomProcessor) obj;
-//				boolean result = dp.process(globalTxId, branchTxId, datas, status);
 					boolean result = dp.process(dt, status);
 					log.debug("compensate_result: globalTxId:{} branchId:{} action:{} status:{} result:{}",
 							dt.getGlobalTxId(), dt.getBranchTxId(), action, status, result);
 					if (result) {
 						try {
 							transactionRepository.deleteByBranchTxId(globalTxId, branchTxId);
-//						message.acknowledge();    //ack手动确认
 						} catch (Exception e) {
 							log.error("", e);
 						}
-
 					} else {
 						dt.retryTimeIncre();
 						try {

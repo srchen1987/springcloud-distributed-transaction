@@ -10,10 +10,7 @@ import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import com.pttl.distributed.transaction.message.MessageConsumer;
@@ -37,8 +34,7 @@ public class AmqpConsumer extends MessageConsumer {
 	 * 
 	 * @Title: consumer
 	 * @Description: 消费者定义
-	 * @param: @param  message
-	 * @param: @throws JMSException
+	 * @param: message
 	 * @return: void
 	 * @throws
 	 * @author: srchen
@@ -53,11 +49,5 @@ public class AmqpConsumer extends MessageConsumer {
 		} catch (IOException e) {
 			log.error("", e);
 		}
-	}
-
-	@Bean("rabbitAdmin")
-	public RabbitAdmin getRabbitAdmin(ConnectionFactory connectionFactory) {
-		RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory);
-		return rabbitAdmin;
 	}
 }
