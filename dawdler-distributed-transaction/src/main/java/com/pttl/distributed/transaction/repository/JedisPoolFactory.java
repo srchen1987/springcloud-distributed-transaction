@@ -43,36 +43,46 @@ import redis.clients.jedis.util.Pool;
  */
 public final class JedisPoolFactory {
 
-	public static Map<String, Pool<Jedis>> pools = new ConcurrentHashMap<>();
+	public static final Map<String, Pool<Jedis>> POOLS = new ConcurrentHashMap<>();
 
 	private static Pool<Jedis> createJedisPool(String fileName) throws Exception {
 		Pool<Jedis> jedisPool = null;
 		Properties ps = PropertiesUtil.loadAllProperties(fileName);
 		String auth = ps.getProperty("auth");
+		String userName = ps.getProperty("userName");
+		String clientName = ps.getProperty("clientName");
+		String sentinelUser = ps.getProperty("sentinelUser");
+		String sentinelPassword = ps.getProperty("sentinelPassword");
+		String sentinelClientName = ps.getProperty("sentinelClientName");
 		int database = PropertiesUtil.getIfNullReturnDefaultValueInt("database", 0, ps);
-		int max_idle = PropertiesUtil.getIfNullReturnDefaultValueInt("max_idle", JedisPoolConfig.DEFAULT_MAX_IDLE, ps);
-		long max_wait = PropertiesUtil.getIfNullReturnDefaultValueLong("max_wait",
+		int maxIdle = PropertiesUtil.getIfNullReturnDefaultValueInt("max_idle", JedisPoolConfig.DEFAULT_MAX_IDLE, ps);
+		long maxWait = PropertiesUtil.getIfNullReturnDefaultValueLong("max_wait",
 				JedisPoolConfig.DEFAULT_MAX_WAIT_MILLIS, ps);
-		int max_active = PropertiesUtil.getIfNullReturnDefaultValueInt("max_active", JedisPoolConfig.DEFAULT_MAX_TOTAL,
+		int maxActive = PropertiesUtil.getIfNullReturnDefaultValueInt("max_active", JedisPoolConfig.DEFAULT_MAX_TOTAL,
 				ps);
 		int timeout = PropertiesUtil.getIfNullReturnDefaultValueInt("timeout", Protocol.DEFAULT_TIMEOUT, ps);
-		Object test_on_borrowObj = ps.get("test_on_borrow");
-		boolean test_on_borrow = JedisPoolConfig.DEFAULT_TEST_ON_BORROW;
-		if (test_on_borrowObj != null) {
-			test_on_borrow = Boolean.parseBoolean(test_on_borrowObj.toString());
+		Object testOnBorrowObj = ps.get("test_on_borrow");
+		boolean testOnBorrow = JedisPoolConfig.DEFAULT_TEST_ON_BORROW;
+		if (testOnBorrowObj != null) {
+			testOnBorrow = Boolean.parseBoolean(testOnBorrowObj.toString());
 		}
 
 		JedisPoolConfig poolConfig = new JedisPoolConfig();
-		poolConfig.setMaxTotal(max_active);
-		poolConfig.setMaxIdle(max_idle);
-		poolConfig.setMaxWaitMillis(max_wait);
-		poolConfig.setTestOnBorrow(test_on_borrow);
+		poolConfig.setMaxTotal(maxActive);
+		poolConfig.setMaxIdle(maxIdle);
+		poolConfig.setMaxWaitMillis(maxWait);
+		poolConfig.setTestOnBorrow(testOnBorrow);
 		String masterName = (String) ps.get("masterName");
 		String sentinels = (String) ps.get("sentinels");
 		if (masterName != null && sentinels != null) {
 			String[] sentinelsArray = sentinels.split(",");
 			Set<String> sentinelsSet = Arrays.stream(sentinelsArray).collect(Collectors.toSet());
-			jedisPool = new JedisSentinelPool(masterName, sentinelsSet, poolConfig, timeout, auth, database);
+			jedisPool = new JedisSentinelPool(masterName, sentinelsSet,
+			poolConfig,
+			timeout, Protocol.DEFAULT_TIMEOUT,Protocol.DEFAULT_TIMEOUT,
+			userName,auth,database, clientName,
+			timeout, Protocol.DEFAULT_TIMEOUT, sentinelUser,
+			sentinelPassword, sentinelClientName);
 		} else {
 			String addr = ps.getProperty("addr");
 			int port = PropertiesUtil.getIfNullReturnDefaultValueInt("port", 5672, ps);
@@ -83,18 +93,20 @@ public final class JedisPoolFactory {
 	}
 
 	public static Pool<Jedis> getJedisPool(String fileName) throws Exception {
-		Pool<Jedis> pool = pools.get(fileName);
-		if (pool != null)
+		Pool<Jedis> pool = POOLS.get(fileName);
+		if (pool != null) {
 			return pool;
+		}
+			
 		if (pool == null) {
-			synchronized (pools) {
-				pool = pools.get(fileName);
+			synchronized (POOLS) {
+				pool = POOLS.get(fileName);
 				if (pool == null) {
-					pools.put(fileName, createJedisPool(fileName));
+					POOLS.put(fileName, createJedisPool(fileName));
 				}
 			}
 		}
-		return pools.get(fileName);
+		return POOLS.get(fileName);
 	}
 
 }

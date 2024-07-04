@@ -113,15 +113,4 @@ public class KryoSerializer implements Serializer {
 		return datas;
 	}
 	
-	public static void main(String[] args) throws Exception {
-		KryoSerializer s = new KryoSerializer();
-		DistributedTransactionContext dc = new DistributedTransactionContext();
-		MessageConfig mc = new MessageConfig();
-		dc.setAttachment(mc);
-		byte[] data = s.serialize(dc);
-		
-		 dc = (DistributedTransactionContext) s.deserialize(data);
-		 
-		 System.out.println(dc.getAttachment());
-	}
 }
