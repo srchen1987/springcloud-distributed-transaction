@@ -79,7 +79,7 @@ public final class JedisPoolFactory {
 			Set<String> sentinelsSet = Arrays.stream(sentinelsArray).collect(Collectors.toSet());
 			jedisPool = new JedisSentinelPool(masterName, sentinelsSet,
 			poolConfig,
-			timeout, Protocol.DEFAULT_TIMEOUT,Protocol.DEFAULT_TIMEOUT,
+			timeout, Protocol.DEFAULT_TIMEOUT,0,
 			userName,auth,database, clientName,
 			timeout, Protocol.DEFAULT_TIMEOUT, sentinelUser,
 			sentinelPassword, sentinelClientName);
