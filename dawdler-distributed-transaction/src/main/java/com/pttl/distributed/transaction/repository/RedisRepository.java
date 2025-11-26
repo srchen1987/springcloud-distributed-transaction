@@ -57,8 +57,10 @@ public class RedisRepository extends TransactionRepository implements Initializi
 				byte[] datas = serializer.serialize(transaction);
 				Map<byte[], byte[]> map = jedis.hgetAll(transaction.getGlobalTxId().getBytes());
 				if (map != null) {
-					map.put(transaction.getBranchTxId().getBytes(), datas);
-					jedis.hmset((PREFIX + transaction.getGlobalTxId()).getBytes(), map);
+					Map<byte[], byte[]> newMap = new HashMap<>();
+					newMap.putAll(map);
+					newMap.put(transaction.getBranchTxId().getBytes(), datas);
+					jedis.hmset((PREFIX + transaction.getGlobalTxId()).getBytes(), newMap);
 					return 1;
 				}
 				return 0;
@@ -106,7 +108,7 @@ public class RedisRepository extends TransactionRepository implements Initializi
 	@Override
 	public int updateDataByGlobalTxId(String globalTxId, Map<String, Object> data) throws Exception {
 		String status = (String) data.get("status");
-		Map map = new HashMap();
+		Map<byte[], byte[]> map = new HashMap<>();
 		return execute(jedisPool, new JedisExecutor<Integer>() {
 			@Override
 			public Integer execute(Jedis jedis) throws Exception {
@@ -129,7 +131,7 @@ public class RedisRepository extends TransactionRepository implements Initializi
 
 	@Override
 	public List<DistributedTransactionContext> findALLBySecondsLater(int seconds) throws Exception {
-		List list = new ArrayList();
+		List<DistributedTransactionContext> list = new ArrayList<>();
 		return execute(jedisPool, new JedisExecutor<List<DistributedTransactionContext>>() {
 			@Override
 			public List<DistributedTransactionContext> execute(Jedis jedis) throws Exception {
